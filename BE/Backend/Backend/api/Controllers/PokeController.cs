@@ -1,6 +1,9 @@
 ﻿using Backend.api.Controllers.DTO;
+using Backend.handler.commands;
+using Backend.handler.queries;
 using Backend.repository;
 using Backend.repository.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -11,98 +14,43 @@ namespace Backend.api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
+    [Authorize(Roles = "User")]
     public class PokeController : ControllerBase
     {
 
-        private readonly MongoDBService _mongoDBService;
-        public PokeController(MongoDBService mongoDBService)
+        private readonly InsertPokemons _insertPokemons;
+        private readonly ObtainPokemons _obtainPokemons;
+        private readonly ObtainPokemonByName _obtainPokemonByName;
+        private readonly CreatePokemon _createPokemon;
+        private readonly DeletePokemon _deletePokemon;
+        private readonly UpdatePokemon _updatePokemon;
+        
+        public PokeController(ObtainPokemons obtainPokemons, CreatePokemon createPokemon, InsertPokemons insertPokemons, ObtainPokemonByName obtainPokemonByName, DeletePokemon deletePokemon, UpdatePokemon updatePokemon)
         {
-            _mongoDBService = mongoDBService;
+            _obtainPokemons = obtainPokemons;
+            _createPokemon = createPokemon;
+            _insertPokemons = insertPokemons;
+            _obtainPokemonByName = obtainPokemonByName;
+            _deletePokemon = deletePokemon;
+            _updatePokemon = updatePokemon;
         }
 
-        /*
-        private readonly CreatePokemon _handleCreate;
-        private readonly GetPokemon _handleGet;
-
-        public PokeController(CreatePokemon handleCreate, GetPokemon handleGet)
-        {
-            _handleCreate = handleCreate;
-            _handleGet = handleGet;
-        }*/
         [Route("InsertPokemons")]
         [HttpPost]
-        public ActionResult InsertPokemons()
+        public async Task<ActionResult> InsertPokemons()
         {
-
-            List<Pokemon> pokemons = new List<Pokemon>();
-            for(int i=1; i<6; i++) { 
-            
-                using (var client = new HttpClient())
-                {
-                    int number = 1;
-                    string baseUrl = "https://pokeapi.co/api/v2/pokemon/"+i;
-
-                    var request = new HttpRequestMessage(HttpMethod.Get, baseUrl);
-
-                    // Solicitud HTTP
-                    var responseTask = client.SendAsync(request);
-
-                    responseTask.Wait();
-
-                    var result = responseTask.Result;
-
-                    PokemonDTO pokemonResult = new PokemonDTO();
-                    if (result.IsSuccessStatusCode)
-                    {
-                        //var data = JsonConvert.DeserializeObject<Data>(result);
-                        var readTask = result.Content.ReadFromJsonAsync<PokemonDTO>();
-                        readTask.Wait();
-                        pokemonResult = readTask.Result;
-                        
-
-                        Pokemon pokemon = new Pokemon();
-                        pokemon.abilities = pokemonResult.abilities;
-                        pokemon.name = pokemonResult.name;
-                        pokemon.sprites = pokemonResult.sprites;
-                        pokemon.moves = pokemonResult.moves.Take(3).ToList();
-                        pokemon.types = pokemonResult.types;
-                        pokemons.Add(pokemon);
-                       
-                        
-
-                    }
-                    else
-                    {
-                    
-                        return BadRequest();
-                    }
-
-
-                }
-            }
-
-            foreach (var pokemon in pokemons)
-            {
-                var result = _mongoDBService.CreatePoke(pokemon);
-            }
-            return Ok(pokemons);
-
-    }
+            List<Pokemon> result = await _insertPokemons.handle();
+            return Ok(result);
+        }
 
         [HttpPost]
         public ActionResult CreatePokemon([FromBody] PokemonDTO poke)
         {
-            Pokemon pokemon = new Pokemon();
-            pokemon.abilities = poke.abilities;
-            pokemon.name = poke.name;
-            pokemon.sprites = poke.sprites;
-            pokemon.moves = poke.moves;
-            pokemon.types = poke.types;
+            
 
+            var result = _createPokemon.handle(poke);
 
-            var result = _mongoDBService.CreatePoke(pokemon);
-
-            if (result == null) {
+            if (result != "OK") {
                 return BadRequest(result);
             }
             else
@@ -116,8 +64,17 @@ namespace Backend.api.Controllers
         [HttpGet]
         public async Task<ActionResult> GetPokemon()
         {
-            List<Pokemon> result = await _mongoDBService.GetPoke();
+            List<Pokemon> result = await _obtainPokemons.handle();
            
+            return Ok(result);
+        }
+
+        [Route("{name}")]
+        [HttpGet]
+        public ActionResult GetPokemonByName(string name)
+        {
+            Pokemon result = _obtainPokemonByName.handle(name);
+
             return Ok(result);
         }
 
@@ -127,9 +84,16 @@ namespace Backend.api.Controllers
         {
             try
             {
-                _mongoDBService.DeletePokemon(name);
+                string result = _deletePokemon.handle(name);
 
-                return Ok("OK");
+                if (result != "OK")
+                {
+                    return BadRequest(result);
+                }
+                else
+                {
+                    return Ok("OK");
+                }
             }
             catch(Exception e)
             {
@@ -145,8 +109,15 @@ namespace Backend.api.Controllers
             try
             {
 
-                _mongoDBService.UpdatePokemon(poke);
-                return Ok("OK");
+                string result = _updatePokemon.handle(poke);
+                if (result != "OK")
+                {
+                    return BadRequest(result);
+                }
+                else
+                {
+                    return Ok("OK");
+                }
             }
             catch(Exception e)
             {
@@ -154,80 +125,5 @@ namespace Backend.api.Controllers
             }
             
         }
-
-
-
-
-        /*
-        // GET: PokeController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
-
-        /*
-        // GET: PokeController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: PokeController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: PokeController/Edit/5
-        public ActionResult Edit(int id)
-        {
-            return View();
-        }
-
-        // POST: PokeController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: PokeController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: PokeController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-        */
     }
 }

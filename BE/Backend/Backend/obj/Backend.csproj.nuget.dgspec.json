@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\nacho\\OneDrive\\Escritorio\\hatchworksCC\\CodingChallenge\\BE\\Backend\\Backend\\Backend.csproj": {}
+    "C:\\Users\\nacho\\OneDrive\\Escritorio\\Challenge\\CodingChallenge\\BE\\Backend\\Backend\\Backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\nacho\\OneDrive\\Escritorio\\hatchworksCC\\CodingChallenge\\BE\\Backend\\Backend\\Backend.csproj": {
+    "C:\\Users\\nacho\\OneDrive\\Escritorio\\Challenge\\CodingChallenge\\BE\\Backend\\Backend\\Backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\nacho\\OneDrive\\Escritorio\\hatchworksCC\\CodingChallenge\\BE\\Backend\\Backend\\Backend.csproj",
+        "projectUniqueName": "C:\\Users\\nacho\\OneDrive\\Escritorio\\Challenge\\CodingChallenge\\BE\\Backend\\Backend\\Backend.csproj",
         "projectName": "Backend",
-        "projectPath": "C:\\Users\\nacho\\OneDrive\\Escritorio\\hatchworksCC\\CodingChallenge\\BE\\Backend\\Backend\\Backend.csproj",
+        "projectPath": "C:\\Users\\nacho\\OneDrive\\Escritorio\\Challenge\\CodingChallenge\\BE\\Backend\\Backend\\Backend.csproj",
         "packagesPath": "C:\\Users\\nacho\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\nacho\\OneDrive\\Escritorio\\hatchworksCC\\CodingChallenge\\BE\\Backend\\Backend\\obj\\",
+        "outputPath": "C:\\Users\\nacho\\OneDrive\\Escritorio\\Challenge\\CodingChallenge\\BE\\Backend\\Backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\nacho\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,14 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
+            },
+            "Microsoft.AspNetCore.Authentication.JwtBearer": {
+              "target": "Package",
+              "version": "[8.0.5, )"
+            },
             "MongoDB.Bson": {
               "target": "Package",
               "version": "[2.25.0, )"
