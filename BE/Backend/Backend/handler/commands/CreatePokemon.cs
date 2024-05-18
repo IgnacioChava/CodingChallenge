@@ -20,6 +20,7 @@ namespace Backend.handler.commands
             pokemon.sprites = poke.sprites;
             pokemon.moves = poke.moves;
             pokemon.types = poke.types;
+            pokemon.is_uploaded = true;
 
 
             var result = _mongoDBService.CreatePoke(pokemon);

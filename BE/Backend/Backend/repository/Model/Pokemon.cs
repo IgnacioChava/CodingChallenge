@@ -22,5 +22,8 @@ namespace Backend.repository.Model
         [BsonElement("types")]
         public List<Types> types { get; set; }
 
+        [BsonElement("is_uploaded")]
+        public bool is_uploaded { get; set; }
+
     }
 }

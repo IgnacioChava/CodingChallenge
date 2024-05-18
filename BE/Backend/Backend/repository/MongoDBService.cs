@@ -63,7 +63,7 @@ namespace Backend.repository
         {
 
             var filter = Builders<Pokemon>.Filter
-            .Eq(poke => poke.Id, pokemon.Id);
+            .Eq(poke => poke.name, pokemon.name);
 
             var oldPoke = _pokemonCollection.Find(filter).First();
             var oldId = oldPoke.Id;

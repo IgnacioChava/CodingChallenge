@@ -18,5 +18,7 @@ namespace Backend.api.Controllers.DTO
         public List<Moves> moves { get; set; }
     
         public List<Types> types { get; set; }
+
+
     }
 }

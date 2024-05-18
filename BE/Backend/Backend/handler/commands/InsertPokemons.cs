@@ -47,6 +47,7 @@ namespace Backend.handler.commands
                         pokemon.sprites = pokemonResult.sprites;
                         pokemon.moves = pokemonResult.moves.Take(3).ToList();
                         pokemon.types = pokemonResult.types;
+                        pokemon.is_uploaded = false;
                         pokemons.Add(pokemon);
 
 
