@@ -102,7 +102,7 @@ const PokeDetails = () => {
 
 
 
-                    <Link to="/"><Button type="dashed">Devolverse</Button></Link>
+                    <Link to="/"><Button type="dashed">Back</Button></Link>
                 </Card>
             )}
         </div>
