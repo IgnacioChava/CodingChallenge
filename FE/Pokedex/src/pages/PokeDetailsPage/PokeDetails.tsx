@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useDependencies } from "./hooks";
-import { Button } from "antd";
+import { Button, Card } from "antd";
 import { Pokemon } from "../../models/poke.models";
+import "./styles.css"
 
 
 
@@ -36,39 +37,54 @@ const PokeDetails = () => {
 
 
     return (
-        <>
+        <div className="container">
             {name == null ? (
                 <h1>There is no pokemon in here!</h1>
             ) : (
-                <>
-                    <div>
+                <Card className="cardLogin1">
+                    <h1 style={{ marginTop: "5%", display:"flex", justifyContent:"center" }}>{poke?.name}</h1>
+                    <div style={{ display: "flex", justifyContent: "center" }}>
                         {poke?.is_uploaded == true ? (
                             <img className="imagePoke" src={`data:image/png;base64,${poke?.sprites.other.home.front_default as string}`} alt={'ImagenPintura'} />
                         ) : <>
                             <img className="imagePoke" src={poke?.sprites.other.home.front_default as string} alt={'ImagenPokemon'} />
                         </>}
-
                     </div>
-                    <h1>Name: {poke?.name}</h1>
-                    <h3>Type:</h3>
-                    <div style={{ display: "flex", gap: "3px" }}>
-                        {poke?.types.map((type, index) => (
-                            <div key={index}>
-                                <h4>{type.type.name}</h4>
+                    <div className="pokeDetailsInner">
+                        <div>
+                            <h3>Type:</h3>
+                            <div style={{ display: "flex", flexDirection: "column" }}>
+                                {poke?.types.map((type, index) => (
+                                    <div key={index}>
+                                        <h4>{type.type.name}</h4>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
-                    </div>
-
-                    <h3>Abilities:</h3>
-                    <div style={{ display: "flex", gap: "3px" }}>
-                        {poke?.abilities.map((ability, index) => (
-                            <div key={index}>
-                                <h4>{ability.ability.name}</h4>
+                        </div>
+                        <div>
+                            <h3>Abilities:</h3>
+                            <div style={{ display: "flex", flexDirection: "column" }}>
+                                {poke?.abilities.map((ability, index) => (
+                                    <div key={index}>
+                                        <h4>{ability.ability.name}</h4>
+                                    </div>
+                                ))}
                             </div>
-                        ))}
+
+                        </div>
+                        <div>
+                            <h3>Moves:</h3>
+                            <div style={{ display: "flex", flexDirection: "column" }}>
+                                {poke?.moves.map((move, index) => (
+                                    <div key={index}>
+                                        <h4>{move.move.name}</h4>
+                                    </div>
+                                ))}
+                            </div>
+
+                        </div>
                     </div>
-                    <h3>Sprites:</h3>
-                    <div style={{ display: "flex", gap: "3px" }}>
+                    <div className="pokeDetailsInnerSprite">
                         {poke?.is_uploaded == true ? (
                             <div>
                                 <img className="imagePoke" src={`data:image/png;base64,${poke.sprites.front_default as string}`} alt={'ImagenPintura'} />
@@ -81,20 +97,15 @@ const PokeDetails = () => {
                             <img className="imagePokeSprite" src={poke?.sprites.back_default as string} alt={'ImagenPokemonSprite'} />
                         </>}
 
+                    </div>
 
-                    </div>
-                    <h3>Moves:</h3>
-                    <div style={{ display: "flex", gap: "3px" }}>
-                        {poke?.moves.map((move, index) => (
-                            <div key={index}>
-                                <h4>{move.move.name}</h4>
-                            </div>
-                        ))}
-                    </div>
+
+
+
                     <Link to="/"><Button type="dashed">Devolverse</Button></Link>
-                </>
+                </Card>
             )}
-        </>
+        </div>
     );
 }
 

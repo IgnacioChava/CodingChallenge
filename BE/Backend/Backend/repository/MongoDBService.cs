@@ -6,10 +6,11 @@ using System.Linq;
 using Backend.repository.Model;
 using static MongoDB.Driver.WriteConcern;
 using DnsClient;
+using Backend.Interface;
 
 namespace Backend.repository
 {
-    public class MongoDBService
+    public class MongoDBService:IMongoDBService
     {
         private readonly IMongoCollection<Pokemon> _pokemonCollection;
         private readonly IMongoCollection<Login> _loginCollection;
@@ -20,6 +21,10 @@ namespace Backend.repository
             _pokemonCollection = database.GetCollection<Pokemon>(mongoDBSettings.Value.CollectionName);
             _loginCollection = database.GetCollection<Login>(mongoDBSettings.Value.CollectionName2);
 
+        }
+        public MongoDBService()
+        {
+            
         }
         public Login CreateUser(Login user)
         {

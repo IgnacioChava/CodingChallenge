@@ -1,5 +1,6 @@
 using Backend.handler.commands;
 using Backend.handler.queries;
+using Backend.Interface;
 using Backend.repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -47,6 +48,10 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.WebHost.ConfigureKestrel(options =>
+{
+    options.ListenLocalhost(7287);
+});
 
 var app = builder.Build();
 
@@ -56,6 +61,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+
 app.UseCors("CorsPolicy");
 
 app.UseHttpsRedirection();

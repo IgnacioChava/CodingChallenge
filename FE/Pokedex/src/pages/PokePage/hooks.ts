@@ -1,11 +1,13 @@
 import { AxiosError } from "axios";
-import { deletePokeByName, getPokes } from "../../service/http.service";
+import { deletePokeByName, getPokes, insertPokes } from "../../service/http.service";
 import { isNill } from "../../utils/comon.utils";
 import useNotificationHandler from "../../hooks/useNotificationHandler";
+import { useNavigate } from "react-router-dom";
 
 export const useDependencies = () =>{
 
     const {setNotification} = useNotificationHandler();
+    const navigate = useNavigate();
 
     const handlePetition = async () => {
 
@@ -21,6 +23,23 @@ export const useDependencies = () =>{
         }
     }
 
+    const handleDefaultPokemon = async () => {
+
+
+        const {failed, success, response} = await insertPokes(); 
+
+        if(failed == true){
+
+            setNotification("Error getting pokemons form PokeApi", "error");
+            
+        }else{
+            setNotification("Inserted pokemons from PokeApi", "success");
+            navigate("/");
+            window.location.reload();
+            
+        }
+    }
+
     const handleDelete = async (name:string) => {
 
 
@@ -33,31 +52,11 @@ export const useDependencies = () =>{
         }else{
             return response?.data;
         }
-    }
-    
-    /*
-    const handlePetitionByName = async (name: string) => {
-
-
-        const {failed, success, response} = await getPaintsByAny(name); 
-
-        console.log(response?.data);
-
-
-        if(failed == true){
-            console.log("no tengo datos");
-            console.log("error");
-            setErrorNotification("no se han podido recuperar las pinturas by name", "error");
-        }else{
-            return response?.data;
-        }
-    }*/
-
-    
-        
+    }        
     return {
         handlePetition,
-        handleDelete
+        handleDelete,
+        handleDefaultPokemon
     }
 
 };

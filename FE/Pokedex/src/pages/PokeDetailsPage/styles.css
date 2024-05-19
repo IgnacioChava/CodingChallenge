@@ -1,0 +1,23 @@
+.container{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 85vh;
+}
+.cardLogin1{
+   flex-direction: column;
+   justify-content: center;
+}
+.pokeDetailsInner{
+    display: flex;
+    gap: 33%;
+}
+.pokeDetailsInnerSprite{
+    display: flex;
+    gap: 20%;
+}
+.pokeSprite{
+    width: 75px;
+    height: 75px;
+}

@@ -5,6 +5,9 @@ h1,h2,h3,h4 {
     width: 450px;
     height: 100%;
 }
+.cardPoke:hover{
+  border: 2px solid #78A083;
+}
 .PokePage{
     display: flex;
     flex-direction: row;
@@ -20,10 +23,14 @@ h1,h2,h3,h4 {
   height: 190px;
   width: 190px;
 }
+.pokeSprites{
+  display: flex;
+  row-gap: 10px;
+}
 @media (max-width: 600px) {
     .imagePoke{
-        height: 250px;
-        width: 700px;
+        height: 100px;
+        width: 100px;
     }
     .cardPoke{
       width: 350px;
@@ -32,6 +39,10 @@ h1,h2,h3,h4 {
     
     .PokePage{
         gap: 20px;
+    }
+    .pokeSprites{
+      display: flex;
+      flex-direction: column;
     }
     
     

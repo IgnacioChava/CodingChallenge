@@ -2,6 +2,7 @@ import { Button, Card, Form, Input } from "antd";
 import { useDependencies } from "./hooks";
 import './styles.css'
 import { UserOutlined, LockOutlined} from '@ant-design/icons';
+import { Link } from "react-router-dom";
 
 const LoginPage = () => {
 
@@ -32,9 +33,18 @@ const LoginPage = () => {
                             <Input.Password />
                         </div>
                     </Form.Item>
-                    <Form.Item>
-                        <Button htmlType="submit" className="buttonLogin">Login</Button>
-                    </Form.Item>
+                    <div style={{ display: "flex", justifyContent: "space-evenly" }} >
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit">
+                                Create
+                            </Button>
+                        </Form.Item>
+                        <Form.Item >
+                            <Button type="primary" danger>
+                                <Link to="/">Cancel</Link>
+                            </Button>
+                        </Form.Item>
+                    </div>
                 </Form>
 
             </Card>

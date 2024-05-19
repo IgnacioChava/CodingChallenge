@@ -9,7 +9,7 @@ import { Login, LoginResponse, Pokemon, PokemonCreate, PokemonUpdate } from '../
 import { GenericResponse } from '../models/api.models';
 
 const apiInstance: AxiosInstance = axios.create({
-	baseURL: 'https://localhost:7287',
+	baseURL: 'http://localhost:5000',
 });
 
 
@@ -98,7 +98,7 @@ export const insertPokes = async () => {
 	let failed = false;
 	let success = !failed; 
 	try {
-		 const call = "/poke"
+		 const call = "/Poke/InsertPokemons"
 		 response = await apiInstance.post<Pokemon[]>(call);
 		 return {response, failed, success}
 	} catch (error) {

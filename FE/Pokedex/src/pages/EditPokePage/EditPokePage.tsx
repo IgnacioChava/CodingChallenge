@@ -31,6 +31,15 @@ const EditPokePage = () => {
 
     useEffect(() => {
         const fetchImages = () => {
+
+            form.setFieldsValue({
+                ability_1: poke?.abilities?.[0]?.ability?.name || '',
+                ability_2: poke?.abilities?.[1]?.ability?.name || '',
+                move_1: poke?.moves?.[0]?.move?.name || '',
+                move_2: poke?.moves?.[1]?.move?.name || '',
+                move_3: poke?.moves?.[2]?.move?.name || '',
+            });
+            
          
             const main: UploadFile[] = [];
             const sprites: UploadFile[] = [];
@@ -120,7 +129,7 @@ const EditPokePage = () => {
                     } className="card" form={form}>
 
                     <Form.Item
-                        name="name" label="Name" valuePropName="name" getValueFromEvent={(e) => e.name}
+                        name="name" label="Update" valuePropName="name" getValueFromEvent={(e) => e.name}
                     >
                         
                         <Input value={poke?.name as string} />
@@ -171,7 +180,7 @@ const EditPokePage = () => {
                     <div style={{ display: "flex", justifyContent: "space-evenly" }} >
                         <Form.Item>
                             <Button type="primary" htmlType="submit">
-                                Create
+                                Update
                             </Button>
                         </Form.Item>
                         <Form.Item >

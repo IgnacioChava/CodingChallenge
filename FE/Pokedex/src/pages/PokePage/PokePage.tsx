@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDependencies } from "./hooks"
 import { AutoComplete, Button, Card, Carousel, Form, Space } from "antd";
-import { SearchOutlined, RollbackOutlined, DeleteOutlined, EditOutlined } from '@ant-design/icons';
+import { SearchOutlined, DeleteOutlined, EditOutlined, FormOutlined } from '@ant-design/icons';
 import './styles.css'
 import { Link, useNavigate } from "react-router-dom";
 import { Pokemon } from "../../models/poke.models";
@@ -12,11 +12,12 @@ import { Pokemon } from "../../models/poke.models";
 const PaintPage = () => {
 
     const navigate = useNavigate()
-    const { handlePetition, handleDelete } = useDependencies();
+    const { handlePetition, handleDelete, handleDefaultPokemon } = useDependencies();
 
     const [pokemones, setPokemones] = useState<Pokemon[] | null>();
     const [loading, setLoading] = useState<boolean>(false);
     const [deletePk, setDelete] = useState<string>("");
+    const [insPokemon, setInsPokemon] = useState<boolean>(false);
 
 
     useEffect(() => {
@@ -27,6 +28,9 @@ const PaintPage = () => {
                     const resp = await handleDelete(deletePk);
                 } 
                 const response = await handlePetition();
+                if(response?.length as number > 0){
+                    setInsPokemon(true);
+                }
                 setPokemones(response);
                 setDelete("");
                 setLoading(false);
@@ -49,7 +53,18 @@ const PaintPage = () => {
                     <div className="loading">Loading&#8230;</div>
                 </div>) :
                 <>
+                    {insPokemon == false ? 
+                    (
+                        <div>
+                            <h1>Get Pokemons!</h1>
+                            <Button onClick={() => handleDefaultPokemon()}>
+                                    <FormOutlined/>
+                            </Button>
+                        </div>
+                    )
+                    :
                     <div className="PokePage">
+                        
                         {pokemones?.map((poke, index) => (
                             <div key={index}>
                                 
@@ -100,7 +115,7 @@ const PaintPage = () => {
                                             ))}
                                         </div>
                                         <h3>Sprites:</h3>
-                                        <div style={{ display: "flex", gap: "3px" }}>
+                                        <div className="pokeSprites">
                                             {poke.is_uploaded == true ? (
                                                 <div>
                                                     <img className="imagePoke" src={`data:image/png;base64,${poke.sprites.front_default as string}`} alt={'ImagenPintura'} />
@@ -132,6 +147,7 @@ const PaintPage = () => {
 
 
                     </div>
+                    }
 
 
                 </>}
