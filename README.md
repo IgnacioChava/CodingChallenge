@@ -32,4 +32,4 @@ Para ejecutar el Front End, sigue estos pasos:
 
 1. Navega a la carpeta `FE/Pokedex`.
 2. Instala los node_modules con `npm i`
-3. Ejecuta el comando `vite run dev` para inciar el FE.
+3. Ejecuta el comando `npm run dev` para inciar el FE.
